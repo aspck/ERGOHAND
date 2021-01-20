@@ -1,0 +1,9 @@
+firmware/PSoc/Archive/
+firmware/PSoc/KeyboardBase.cydsn/codegentemp/
+firmware/PSoc/KeyboardBase.cydsn/CortexM0/
+firmware/PSoc/KeyboardBase.cydsn/Export/
+firmware/PSoc/KeyboardBase.cydsn/Generated_Source/
+firmware/PSoc/KeyboardBase.cydsn/KeyboardBase*
+!firmware/PSoc/KeyboardBase.cydsn/KeyboardBase.cyprj
+!firmware/PSoc/KeyboardBase.cydsn/KeyboardBase.cydwr
+!firmware/PSoc/KeyboardBase.cydsn/*.log
