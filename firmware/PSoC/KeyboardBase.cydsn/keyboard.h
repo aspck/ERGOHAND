@@ -31,7 +31,21 @@ inline uint8_t getKeycodeFromIndex(uint8_t row, uint8_t col){
  *
  * Return: 1 if any switch changed state, 0 otherwise
  */
-uint8_t ScanKeys();
+uint8_t Keyboard_ScanKeys();
+
+/**
+ * Writes the keymap variable to Flash
+ *
+ * Return: 0 if successful, 1 otherwise
+ */
+uint8_t Keyboard_WriteConfig();
+
+/**
+ * Reads keymap from Flash and updates variable
+ *
+ * Return: 0 if successful, 1 otherwise
+ */
+uint8_t Keyboard_ReadConfig();
 
 /**
  * Notifies the HID host of a keyboard report change
@@ -42,6 +56,7 @@ CYBLE_API_RESULT_T HID_Report_Send();
 
 /**
  * Searches for the first instance of a keycode in the HID report and clears the status
+ * TODO: move active keys to front of queue
  */
 void HID_Report_RemoveKey(uint8_t keycode);
 
