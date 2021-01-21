@@ -1,6 +1,7 @@
 # ERGOHAND
 Bluetooth keyboard inspired by the [DataHand](https://en.wikipedia.org/wiki/DataHand).
 This is a personal project to practice embedded C and low-level desktop application development, and to get some real use out of my 3D printer.
+
 I chose the Cypress PSoC 4 platform because I already have two boards and it offers a turnkey BLE stack and built-in battery management. In the future I'd like to try a fully open-source wireless solution and cheaper microcontrollers.
 ## Components
 ### Firmware
