@@ -20,7 +20,9 @@
 
 /** Global Variables */
 uint8_t mainTimer = 0;
-    
+uint8_t Keyboard_configChanged = 0;    
+uint8_t Keyboard_configReadOnce = 1;
+
 /** Interrupt Service Routine: Timer */
 CY_ISR(ISR_Timer)
 {
@@ -30,7 +32,7 @@ CY_ISR(ISR_Timer)
     Timer_ReadStatusRegister();    
 }
 
-/** Cypress BLE event handler */
+/** BLE event handler */
 void BLECallBack(uint32 event, void* eventParam)
 {
     CYBLE_API_RESULT_T apiResult;
@@ -217,10 +219,11 @@ void BLECallBack(uint32 event, void* eventParam)
                             DBG_PRINTF("%02x:", offset->handleValuePair.value.val[w]);
                         }
                         DBG_PRINTF("\r\n");
+                        
+                        /* notify main loop that config needs to be saved in flash */                       
+                        Keyboard_configChanged = 1;
                     }
-  
                 }
- 
             }                 
         break;
         /**********************************************************
@@ -267,7 +270,7 @@ int main(void)
                 if (HIDS_status == ENABLED)
                 {
                     /* poll keys and check for state change */
-                    if (ScanKeys())
+                    if (Keyboard_ScanKeys())
                     {
                         DBG_PRINTF("Key event detected\r\n");
                         
@@ -284,6 +287,32 @@ int main(void)
                     }  
                 }
             }                 
+            
+            /** Flash operations. Only done after Bluetooth connection has been made
+             *  for the sake of minimizing write cycles. */
+            
+            /* Read keyboard configuration from Flash, only done once per power cycle */
+            if (Keyboard_configReadOnce)
+            {
+                if(Keyboard_ReadConfig() == 0)
+                {
+                    Keyboard_configReadOnce = 0;
+                    DBG_PRINTF("Config read from EEPROM\r\n");
+                }
+            }
+            
+            /* check if config needs to be written */
+            if (Keyboard_configChanged)
+            {
+                /* attempt to write to flash */
+                if (Keyboard_WriteConfig() == 0)
+                {
+                    Keyboard_configChanged = 0;
+                    DBG_PRINTF("New device config saved to EEPROM\r\n");
+                } else {
+                    DBG_PRINTF("Error: New device config not saved\r\n");
+                }       
+            }
             
             /* Store bonding data to flash, this will only run once per pairing */
             #if(CYBLE_BONDING_REQUIREMENT == CYBLE_BONDING_YES)

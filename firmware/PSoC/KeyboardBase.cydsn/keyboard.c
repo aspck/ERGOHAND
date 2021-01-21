@@ -16,8 +16,7 @@ uint8_t keyMap[nMAXKEYS] = {
     0, 0, 0, 0  
 };  
 
-/*** Polls all keys, keeps track of key states, returns change flag */
-uint8_t ScanKeys()
+uint8_t Keyboard_ScanKeys()
 {
     static uint8_t keysDebounce[nROWS][nCOLS] = {0};
     uint8_t bKeyChanged = 0;
@@ -68,8 +67,16 @@ uint8_t ScanKeys()
     return bKeyChanged;
 }
 
-/* Notifies the HID host of a keyboard report change
-*/
+uint8_t Keyboard_WriteConfig()
+{
+    return 1;
+}
+
+uint8_t Keyboard_ReadConfig()
+{
+    return 1;
+}
+
 CYBLE_API_RESULT_T HID_Report_Send()
 {
     CYBLE_API_RESULT_T apiResult = CYBLE_ERROR_STACK_BUSY;
@@ -112,9 +119,6 @@ CYBLE_API_RESULT_T HID_Report_Send()
 
 }
 
-/*** Searches for the first instance of a keycode in the HID report and clears the status
-*   TODO: move active keys to front of queue
-*/
 void HID_Report_RemoveKey(uint8_t keycode)
 {
     for (uint i = 2; i < KEYBOARD_DATA_SIZE; i++)
@@ -127,7 +131,6 @@ void HID_Report_RemoveKey(uint8_t keycode)
     }
 }
 
-/*** Adds a keycode to the first available empty slot in the HID report*/
 void HID_Report_AddKey(uint8_t keycode)
 {    
     for (uint i = 2; i < KEYBOARD_DATA_SIZE; i++)
