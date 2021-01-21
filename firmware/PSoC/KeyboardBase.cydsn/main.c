@@ -175,22 +175,54 @@ void BLECallBack(uint32 event, void* eventParam)
             DBG_PRINTF("CYBLE_EVT_GATT_DISCONNECT_IND \r\n");
             break;
         case CYBLE_EVT_GATTS_READ_CHAR_VAL_ACCESS_REQ:
-            {
-                /* Triggered on server side when client sends read request and when
-                * characteristic has CYBLE_GATT_DB_ATTR_CHAR_VAL_RD_EVENT property set. */
-     
-                uint16 readHandle = ((CYBLE_GATTS_CHAR_VAL_READ_REQ_T *)eventParam)->attrHandle;
-                DBG_PRINTF("CYBLE_EVT_GATTS_READ_CHAR_VAL_ACCESS_REQ: handle: %x \r\n", readHandle);               
-  
-            }
+            /* Triggered on server side when client sends read request and when
+            * characteristic has CYBLE_GATT_DB_ATTR_CHAR_VAL_RD_EVENT property set. */
+            DBG_PRINTF("CYBLE_EVT_GATTS_READ_CHAR_VAL_ACCESS_REQ: handle: %x \r\n", ((CYBLE_GATTS_CHAR_VAL_READ_REQ_T *)eventParam)->attrHandle);              
+            break;
+        case CYBLE_EVT_GATTS_WRITE_CMD_REQ:
+            /** 'Write Command' Request from client device. Event parameter is a 
+            pointer to a structure of type CYBLE_GATTS_WRITE_CMD_REQ_PARAM_T. */
+            DBG_PRINTF("CYBLE_EVT_GATTS_WRITE_CMD_REQ: handle: %x\r\n", ((CYBLE_GATTS_WRITE_CMD_REQ_PARAM_T *)eventParam)->handleValPair.attrHandle);
+            break;
+        case CYBLE_EVT_GATTS_PREP_WRITE_REQ:            
+            /** 'Prepare Write' Request from client device. Event parameter is a
+            pointer to a structure of type CYBLE_GATTS_PREP_WRITE_REQ_PARAM_T. */
+            DBG_PRINTF("CYBLE_EVT_GATTS_PREP_WRITE_REQ \r\n");
             break;
             
-        //case "characteristic written by client"    
-            
-            
-            
-            
-            
+        /* client has written data to us, let's read it */    
+        case CYBLE_EVT_GATTS_EXEC_WRITE_REQ:
+            {
+                CYBLE_GATTS_EXEC_WRITE_REQ_T* e = (CYBLE_GATTS_EXEC_WRITE_REQ_T *)eventParam;
+                CYBLE_GATT_HANDLE_VALUE_OFFSET_PARAM_T* offset = e->baseAddr;
+                uint8_t numberOfPackets = e->prepWriteReqCount;
+                
+                DBG_PRINTF("CYBLE_EVT_GATTS_EXEC_WRITE_REQ; handle: %x\r\n", offset->handleValuePair.attrHandle);
+                
+                /* check if it's the data attribute */
+                if (offset->handleValuePair.attrHandle == KEYMAP_ATTR)
+                {                        
+                    uint8_t arrayLength = 0;
+                    for (int w = 0; w < numberOfPackets; w++)
+                    {
+                        arrayLength += offset[w].handleValuePair.value.len;
+                    }            
+                    DBG_PRINTF("length: %i\r\n", arrayLength);     
+                    
+                    if (arrayLength == nMAXKEYS) /* all good, copy to keymap */
+                    {
+                        for (int w = 0; w < arrayLength; w++)
+                        {
+                            keyMap[w] = offset->handleValuePair.value.val[w];
+                            DBG_PRINTF("%02x:", offset->handleValuePair.value.val[w]);
+                        }
+                        DBG_PRINTF("\r\n");
+                    }
+  
+                }
+ 
+            }                 
+        break;
         /**********************************************************
         *                       Other Events
         ***********************************************************/
