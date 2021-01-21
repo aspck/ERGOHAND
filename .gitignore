@@ -7,3 +7,4 @@ firmware/PSoc/KeyboardBase.cydsn/KeyboardBase*
 !firmware/PSoc/KeyboardBase.cydsn/KeyboardBase.cyprj
 !firmware/PSoc/KeyboardBase.cydsn/KeyboardBase.cydwr
 firmware/PSoc/KeyboardBase.cydsn/*.log
+*.log
