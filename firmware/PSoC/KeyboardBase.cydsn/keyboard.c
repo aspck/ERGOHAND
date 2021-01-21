@@ -69,12 +69,27 @@ uint8_t Keyboard_ScanKeys()
 
 uint8_t Keyboard_WriteConfig()
 {
-    return 1;
+    cy_en_em_eeprom_status_t result = EEPROM_Write(0u, keyMap, nMAXKEYS);
+    if (result == CY_EM_EEPROM_SUCCESS)
+    {
+        return 0;
+    } else {
+        return 1;
+    }    
 }
 
 uint8_t Keyboard_ReadConfig()
 {
-    return 1;
+    uint8_t keyMapBuf[nMAXKEYS];
+    cy_en_em_eeprom_status_t result = EEPROM_Read(0u, keyMapBuf, nMAXKEYS);
+    if (result == CY_EM_EEPROM_SUCCESS)
+    {
+        memcpy(keyMap, keyMapBuf, nMAXKEYS);
+        return 0;
+    } else {
+        return 1;
+    }   
+
 }
 
 CYBLE_API_RESULT_T HID_Report_Send()
