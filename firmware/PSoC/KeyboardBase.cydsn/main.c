@@ -22,6 +22,10 @@
 uint8_t mainTimer = 0;
 uint8_t Keyboard_configChanged = 0;    
 uint8_t Keyboard_configReadOnce = 1;
+/* dynamic memory location for simulated EEPROM */
+const uint8_t EEPROM_mem[EEPROM_PHYSICAL_SIZE]
+__ALIGNED(CY_FLASH_SIZEOF_ROW) = {0u};
+
 
 /** Interrupt Service Routine: Timer */
 CY_ISR(ISR_Timer)
@@ -248,12 +252,14 @@ int main(void)
     CyGlobalIntEnable; /* Enable global interrupts. */
     
     UART_DEB_Start(); /* start Serial Debugger, can't use PRINTF without this */
-    DBG_PRINTF("BLE Keyboard entered main\r\n");    
-    
+    DBG_PRINTF("BLE Keyboard entered main\r\n");      
+
     CyBle_Start(BLECallBack); /* start BLE stack */
     Timer_Start();
-    ISR_tmr_StartEx(ISR_Timer); /* register timer interrupt service routine */
-    
+    ISR_tmr_StartEx(ISR_Timer); /* register timer interrupt service routine */    
+    volatile cy_en_em_eeprom_status_t eepromReturnValue = EEPROM_Init((uint32_t)EEPROM_mem); /* initialize emulated EEPROM */
+
+
     for(;;)
     {      
         CyBle_ProcessEvents(); /* required BLE function */
@@ -298,6 +304,8 @@ int main(void)
                 {
                     Keyboard_configReadOnce = 0;
                     DBG_PRINTF("Config read from EEPROM\r\n");
+                } else {
+                    DBG_PRINTF("Error: First-time EEPROM read failed\r\n");
                 }
             }
             
