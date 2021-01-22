@@ -8,15 +8,14 @@
 #include "keyboard.h"
 
 uint8_t keyMap[nMAXKEYS] = {
-    0x04,   0x05,   0x06,   0x07,
-    0x1E, 0x1F, 0x20, 0x21,
-    0,  0, 0, 0,
-    0, 0, 0, 0,
-    0, 0, 0, 0,
-    0, 0, 0, 0  
+    0x04,   0x05,   0x06,   0x07,   0x08,
+    0x09,   0x0a,   0x0b,   0x0c,   0x0d,
+    0x0e,   0x0f,   0x10,   0x11,   0x12,
+    0x13,   0x14,   0x15,   0x16,   0x17,
+    0x18,   0x19,   0x1a,   0x1b,   0x1c,   0xff
 };  
 
-uint8_t Keyboard_ScanKeys()
+uint8_t Keyboard_ScanKeys() 
 {
     static uint8_t keysDebounce[nROWS][nCOLS] = {0};
     uint8_t bKeyChanged = 0;
@@ -67,6 +66,31 @@ uint8_t Keyboard_ScanKeys()
     return bKeyChanged;
 }
 
+uint8_t Keyboard_UpdateConfigAtt()
+{
+    /* create struct to send */
+    CYBLE_GATT_HANDLE_VALUE_PAIR_T locHandleValuePair;
+    locHandleValuePair.attrHandle = KEYMAP_ATTR1;
+    locHandleValuePair.value.len = nMAXKEYS/2;
+    locHandleValuePair.value.val = keyMap;
+    
+    volatile CYBLE_GATT_ERR_CODE_T result;
+    /* since this characteristic is "long" we need to do 2 writes */
+    result = CyBle_GattsWriteAttributeValue(&locHandleValuePair, 0u, NULL, CYBLE_GATT_DB_LOCALLY_INITIATED);
+    {
+        DBG_PRINTF("wrote attribute: %x \r\n",*locHandleValuePair.value.val);
+        locHandleValuePair.attrHandle = KEYMAP_ATTR2;
+        locHandleValuePair.value.val = keyMap + nMAXKEYS/2;
+        if( CyBle_GattsWriteAttributeValue(&locHandleValuePair, 0u, NULL, CYBLE_GATT_DB_LOCALLY_INITIATED) == CYBLE_GATT_ERR_NONE )
+        {
+            DBG_PRINTF("wrote attribute: %x \r\n ",*(locHandleValuePair.value.val));
+            return 0;
+        }
+    }
+
+    return 1;
+}        
+        
 uint8_t Keyboard_WriteConfig()
 {
     cy_en_em_eeprom_status_t result = EEPROM_Write(0u, keyMap, nMAXKEYS);

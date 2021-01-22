@@ -16,16 +16,16 @@
 #include "hids.h"
 
 /** Constants */
-#define KEYMAP_ATTR     (0x35)
+#define LOOP_DELAY_MS   (1u)
 
 /** Global Variables */
 uint8_t mainTimer = 0;
 uint8_t Keyboard_configChanged = 0;    
 uint8_t Keyboard_configReadOnce = 1;
+
 /* dynamic memory location for simulated EEPROM */
 const uint8_t EEPROM_mem[EEPROM_PHYSICAL_SIZE]
 __ALIGNED(CY_FLASH_SIZEOF_ROW) = {0u};
-
 
 /** Interrupt Service Routine: Timer */
 CY_ISR(ISR_Timer)
@@ -205,8 +205,8 @@ void BLECallBack(uint32 event, void* eventParam)
                 
                 DBG_PRINTF("CYBLE_EVT_GATTS_EXEC_WRITE_REQ; handle: %x\r\n", offset->handleValuePair.attrHandle);
                 
-                /* check if it's the data attribute */
-                if (offset->handleValuePair.attrHandle == KEYMAP_ATTR)
+                /* check which keymap attribute it is */
+                if (offset->handleValuePair.attrHandle == KEYMAP_ATTR1)
                 {                        
                     uint8_t arrayLength = 0;
                     for (int w = 0; w < numberOfPackets; w++)
@@ -214,20 +214,37 @@ void BLECallBack(uint32 event, void* eventParam)
                         arrayLength += offset[w].handleValuePair.value.len;
                     }            
                     DBG_PRINTF("length: %i\r\n", arrayLength);     
-                    
-                    if (arrayLength == nMAXKEYS) /* all good, copy to keymap */
+
+                    for (int w = 0; w < arrayLength; w++)
                     {
-                        for (int w = 0; w < arrayLength; w++)
-                        {
-                            keyMap[w] = offset->handleValuePair.value.val[w];
-                            DBG_PRINTF("%02x:", offset->handleValuePair.value.val[w]);
-                        }
-                        DBG_PRINTF("\r\n");
-                        
-                        /* notify main loop that config needs to be saved in flash */                       
-                        Keyboard_configChanged = 1;
+                        keyMap[w] = offset->handleValuePair.value.val[w];
+                        DBG_PRINTF("%02x:", offset->handleValuePair.value.val[w]);
                     }
+                    DBG_PRINTF("\r\n");
+                    
+                    /* notify main loop that config needs to be saved in flash */                       
+                    Keyboard_configChanged = 1;
                 }
+                else if (offset->handleValuePair.attrHandle == KEYMAP_ATTR2)
+                {                        
+                    uint8_t arrayLength = 0;
+                    for (int w = 0; w < numberOfPackets; w++)
+                    {
+                        arrayLength += offset[w].handleValuePair.value.len;
+                    }            
+                    DBG_PRINTF("length: %i\r\n", arrayLength);     
+
+                    for (int w = 0; w < arrayLength; w++)
+                    {
+                        keyMap[w+(nMAXKEYS/2)] = offset->handleValuePair.value.val[w];
+                        DBG_PRINTF("%02x:", offset->handleValuePair.value.val[w]);
+                    }
+                    DBG_PRINTF("\r\n");
+                    
+                    /* notify main loop that config needs to be saved in flash */                       
+                    Keyboard_configChanged = 1;
+                }
+                    
             }                 
         break;
         /**********************************************************
@@ -257,13 +274,12 @@ int main(void)
     CyBle_Start(BLECallBack); /* start BLE stack */
     Timer_Start();
     ISR_tmr_StartEx(ISR_Timer); /* register timer interrupt service routine */    
-    volatile cy_en_em_eeprom_status_t eepromReturnValue = EEPROM_Init((uint32_t)EEPROM_mem); /* initialize emulated EEPROM */
-
+    EEPROM_Init((uint32_t)EEPROM_mem); /* initialize emulated EEPROM */
 
     for(;;)
     {      
         CyBle_ProcessEvents(); /* required BLE function */
-        
+         
         /* check for Bluetooth connection*/
         if ((CyBle_GetState() == CYBLE_STATE_CONNECTED) && (suspend != CYBLE_HIDS_CP_SUSPEND))
         {
@@ -303,6 +319,8 @@ int main(void)
                 if(Keyboard_ReadConfig() == 0)
                 {
                     Keyboard_configReadOnce = 0;
+                    /* update GATT attribute to reflect configuration from EEPROM */
+                    Keyboard_UpdateConfigAtt();
                     DBG_PRINTF("Config read from EEPROM\r\n");
                 } else {
                     DBG_PRINTF("Error: First-time EEPROM read failed\r\n");
@@ -318,7 +336,9 @@ int main(void)
                     Keyboard_configChanged = 0;
                     DBG_PRINTF("New device config saved to EEPROM\r\n");
                 } else {
-                    DBG_PRINTF("Error: New device config not saved\r\n");
+                    DBG_PRINTF("Error: New device config not saved, reset device\r\n");
+                    /* should probably do something here... if EEPROM doesn't work something is very wrong */
+                    while(1);
                 }       
             }
             

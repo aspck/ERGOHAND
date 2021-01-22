@@ -13,16 +13,18 @@
     
 #include "common.h"
     
-#define nROWS       (2u)
-#define nCOLS       (4u)
-#define nMAXKEYS    (24u)
-#define LOOP_DELAY_MS   (1u)
+#define nROWS           (2u)
+#define nCOLS           (4u)
+#define nMAXKEYS        (26u)
 #define DEBOUNCE_COUNT  (10u)
-
+#define KEYMAP_ATTR1    CYBLE_CUSTOM_SERVICE_CUSTOM_CHARACTERISTIC_CHAR_HANDLE
+#define KEYMAP_ATTR2    CYBLE_CUSTOM_SERVICE_CUSTOM_CHARACTERISTIC_2_CHAR_HANDLE
+    
 /* array that maps the physical switches to USB HID keycodes */
 extern uint8_t keyMap[nMAXKEYS];  
     
-inline uint8_t getKeycodeFromIndex(uint8_t row, uint8_t col){
+inline uint8_t getKeycodeFromIndex(uint8_t row, uint8_t col)
+{
     return keyMap[row * nCOLS + col];
 }
 
@@ -32,6 +34,13 @@ inline uint8_t getKeycodeFromIndex(uint8_t row, uint8_t col){
  * Return: 1 if any switch changed state, 0 otherwise
  */
 uint8_t Keyboard_ScanKeys();
+
+/**
+ * Writes the supplied keyMap variable to the corresponding local GATT attribute
+ *
+ * Return: 0 if successful, 1 otherwise
+ */
+uint8_t Keyboard_UpdateConfigAtt();
 
 /**
  * Writes the keymap variable to Flash
