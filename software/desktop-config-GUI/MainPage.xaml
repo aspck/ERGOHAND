@@ -7,15 +7,114 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"  Height="1000" Width="1000">
-
+    <Page.Resources>
+        <CollectionViewSource x:Name="keyCodes"/>
+    </Page.Resources>
     <Grid>
-        <NavigationView SelectionChanged="NavigationView_SelectionChanged" PaneDisplayMode="Top">
-            <NavigationView.MenuItems>
-                <NavigationViewItem Content="Connection Manager" x:Name="connectpage" />
-                <NavigationViewItem Content="Keyboard Customization" x:Name="keyboardpage" />
-            </NavigationView.MenuItems>
-            <Frame x:Name="MainFrame" />
-
-        </NavigationView>
+        <Grid.RowDefinitions>
+            <RowDefinition  Height="44"/>
+            <RowDefinition  Height="44"/>
+            <RowDefinition  Height="44"/>
+            <RowDefinition  Height="*"/>  
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="44"/>
+            <ColumnDefinition Width="44"/>
+            <ColumnDefinition Width="44"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Button Content=" " Width="40" Height="40" Grid.Row="1" HorizontalAlignment="Center">
+            <Button.Flyout>
+                <Flyout>
+                    <GridView ItemsSource="{Binding Source={StaticResource keyCodes}}">
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" Style="{StaticResource BaseTextBlockStyle}" FontSize="13" TextAlignment="Center" />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid MaximumRowsOrColumns="12"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+                    </GridView>
+                </Flyout>
+            </Button.Flyout>
+        </Button>
+        <Button Content=" " Width="40" Height="40" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">
+            <Button.Flyout>
+                <Flyout>
+                    <GridView ItemsSource="{Binding Source={StaticResource keyCodes}}">
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" Style="{StaticResource BaseTextBlockStyle}" FontSize="13" TextAlignment="Center" />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid MaximumRowsOrColumns="12"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+                    </GridView>
+                </Flyout>
+            </Button.Flyout>
+        </Button>
+        <Button Content=" " Width="40" Height="40" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">
+            <Button.Flyout>
+                <Flyout>
+                    <GridView ItemsSource="{Binding Source={StaticResource keyCodes}}">
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" Style="{StaticResource BaseTextBlockStyle}" FontSize="13" TextAlignment="Center" />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid MaximumRowsOrColumns="12"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+                    </GridView>
+                </Flyout>
+            </Button.Flyout>
+        </Button>
+        <Button Content=" " Width="40" Height="40" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center">
+            <Button.Flyout>
+                <Flyout>
+                    <GridView ItemsSource="{Binding Source={StaticResource keyCodes}}">
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" Style="{StaticResource BaseTextBlockStyle}" FontSize="13" TextAlignment="Center" />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid MaximumRowsOrColumns="12"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+                    </GridView>
+                </Flyout>
+            </Button.Flyout>
+        </Button>
+        <Button Content=" " Width="40" Height="40" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center">
+            <Button.Flyout>
+                <Flyout>
+                    <GridView ItemsSource="{Binding Source={StaticResource keyCodes}}">
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" Style="{StaticResource BaseTextBlockStyle}" FontSize="13" TextAlignment="Center" />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid MaximumRowsOrColumns="12"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+                    </GridView>
+                </Flyout>
+            </Button.Flyout>
+        </Button>
     </Grid>
+
+
 </Page>
+    
