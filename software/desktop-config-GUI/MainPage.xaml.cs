@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using System.Diagnostics;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -23,42 +24,7 @@ namespace UWtest
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public class KeyCode
-        {
-            public int ID
-            {
-                get;
-                set;
-            }
-            public string Name
-            {
-                get;
-                set;
-            }
-            public override string ToString()
-            {
-                return this.Name;
-            }
-            public KeyCode(int x, string a)
-            {
-                ID = x;
-                Name = a;
-            }
-        }
-
-        public MainPage()
-        {
-            this.InitializeComponent();
-
-            PopulateKeycodes();
-
-        }
-
-        private void PopulateKeycodes()
-        {
-            List<KeyCode> KeyList = new List<KeyCode>();
-
-            var KeynameCode = new Dictionary<string, int>() {
+        public Dictionary<string, int> KeyList { get; } = new Dictionary<string, int>() {
                 {"A", 0x04 },
                 {"B", 0x05 },
                 {"C", 0x06 },
@@ -181,16 +147,29 @@ namespace UWtest
 
 };
 
-            foreach (var x in KeynameCode)
-            {
-                KeyList.Add(new KeyCode(x.Value, x.Key));
-            }
-
-            keyCodes.Source = KeyList;
+        public MainPage()
+        {
+            this.InitializeComponent();
+            Debug.WriteLine("ggg");
 
         }
 
-    }
 
+        internal static void FindChildren<T>(List<T> results, DependencyObject startNode)
+where T : DependencyObject
+        {
+            int count = VisualTreeHelper.GetChildrenCount(startNode);
+            for (int i = 0; i < count; i++)
+            {
+                DependencyObject current = VisualTreeHelper.GetChild(startNode, i);
+                if (current.GetType().Equals(typeof(T)))
+                {
+                    T asType = (T)current;
+                    results.Add(asType);
+                }
+                FindChildren<T>(results, current);
+            }
+        }
+    }
 
 }
