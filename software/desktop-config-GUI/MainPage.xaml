@@ -6,8 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Custom="using:System"
     x:Class="UWtest.MainPage"
-    mc:Ignorable="d"
-    Height="1000" Width="1000">
+    mc:Ignorable="d" Height="840" Width="670">
     <!-- Style definition for Comboboxes to hide the arrow and define data source. -->
     <Page.Resources>
         <Style x:Key="CBArrowless" TargetType="ComboBox">
@@ -339,18 +338,29 @@
         </Style>
     </Page.Resources>
 
-    <Grid x:Name="RootGrid" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{ThemeResource AppBarItemDisabledForegroundThemeBrush}">
+    <Grid x:Name="RootGrid" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF0F1013">
         <Grid.RowDefinitions>
-            <RowDefinition  Height="500"/>
-            <RowDefinition  Height="500"/>
+            <RowDefinition  Height="40"/>
+            <RowDefinition  Height="400"/>
+            <RowDefinition  Height="400"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="700"/>
-            <ColumnDefinition Width="300"/>
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Row="0" Name ="leftkeymapcontainer" BorderBrush="Black" Background="#FF232838" Width="685" Height="480" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="2,2,2,2" CornerRadius="20,20,20,20">
-            <TextBlock Text="LEFT HAND" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="50" FocusVisualPrimaryBrush="Black" Foreground="#FFA0A0A0" Margin="27,0,0,50" FontFamily="Verdana" />
-            <Grid Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" Margin="25,110,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" >
+        <Grid Grid.Row="1" Name ="leftkeymapcontainer" BorderBrush="Black" Background="#FF232838" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="2,2,2,2" CornerRadius="20,20,20,20">
+            <Grid.RowDefinitions>
+                <RowDefinition  Height="60"/>
+                <RowDefinition  Height="160"/>
+                <RowDefinition  Height="160"/>
+                <RowDefinition  Height="10"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="10"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.ColumnSpan="2" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Text="LEFT HAND" FontSize="50" FocusVisualPrimaryBrush="Black" Foreground="#FFA0A0A0" FontFamily="Verdana" Width="289" IsHitTestVisible="False" Margin="2,2,0,0" />
+            <Grid Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE">
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="50"/>
                     <RowDefinition  Height="50"/>
@@ -367,7 +377,7 @@
                 <ComboBox Grid.Row="2" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
             </Grid>
-            <Grid Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" Margin="185,110,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Grid Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" >
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="50"/>
                     <RowDefinition  Height="50"/>
@@ -384,7 +394,7 @@
                 <ComboBox Grid.Row="2" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
             </Grid>
-            <Grid Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" Margin="345,110,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Grid Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" >
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="50"/>
                     <RowDefinition  Height="50"/>
@@ -401,7 +411,7 @@
                 <ComboBox Grid.Row="2" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
             </Grid>
-            <Grid Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" Margin="505,110,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Grid Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" >
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="50"/>
                     <RowDefinition  Height="50"/>
@@ -418,7 +428,7 @@
                 <ComboBox Grid.Row="2" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
             </Grid>
-            <Grid Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" Margin="505,270,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Grid Grid.Row="2" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" >
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="50"/>
                     <RowDefinition  Height="50"/>
@@ -435,10 +445,27 @@
                 <ComboBox Grid.Row="2" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
             </Grid>
+            <Button Tag="LeftHand" Content="Upload config" Grid.Row="2" VerticalAlignment="Top" Background="#FF818181" Height="30" Padding="0,0,0,5" Width="120" Click="UploadButton_Click" Margin="0,110,0,0" Grid.Column="1" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="LeftStatusText" Grid.Column="1" HorizontalAlignment="Left" Margin="22,20,0,0" Grid.Row="2" Text="Device Status: Not found" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="#FF7A7A7A" Width="181" Grid.ColumnSpan="2" Height="31"/>
+            <Button Tag="LeftHand" Content="Download config" Grid.Row="2" VerticalAlignment="Top" Background="#FF818181" Height="30" Padding="0,0,0,5" Width="140" Click="DownloadButton_Click" Margin="0,110,0,0" Grid.Column="2" HorizontalAlignment="Center"/>
         </Grid>
-        <Grid Grid.Row="1" Name ="rightkeymapcontainer" BorderBrush="Black" Background="#FF232838" Width="685" Height="480" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="2,2,2,2" CornerRadius="20,20,20,20">
-            <TextBlock Text="RIGHT HAND" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="50" FocusVisualPrimaryBrush="Black" Foreground="#FFA0A0A0" Margin="0,0,121,58" FontFamily="Verdana" />
-            <Grid Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" Margin="25,270,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" >
+        <Grid Grid.Row="2" Name ="rightkeymapcontainer" BorderBrush="Black" Background="#FF232838" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="2,2,2,2" CornerRadius="20,20,20,20">
+            <Grid.RowDefinitions>
+                <RowDefinition  Height="60"/>
+                <RowDefinition  Height="160"/>
+                <RowDefinition  Height="160"/>
+                <RowDefinition  Height="10"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="10"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.ColumnSpan="3" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top" Text="RIGHT HAND" FontSize="50" FocusVisualPrimaryBrush="Black" Foreground="#FFA0A0A0" FontFamily="Verdana" IsHitTestVisible="False" Margin="-10,0,0,0" />
+            <Grid Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE">
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="50"/>
                     <RowDefinition  Height="50"/>
@@ -455,7 +482,7 @@
                 <ComboBox Grid.Row="2" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
             </Grid>
-            <Grid Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" Margin="25,110,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Grid Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" >
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="50"/>
                     <RowDefinition  Height="50"/>
@@ -472,7 +499,7 @@
                 <ComboBox Grid.Row="2" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
             </Grid>
-            <Grid Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" Margin="185,110,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Grid Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" >
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="50"/>
                     <RowDefinition  Height="50"/>
@@ -489,7 +516,7 @@
                 <ComboBox Grid.Row="2" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
             </Grid>
-            <Grid Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" Margin="345,110,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Grid Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" >
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="50"/>
                     <RowDefinition  Height="50"/>
@@ -506,7 +533,7 @@
                 <ComboBox Grid.Row="2" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
             </Grid>
-            <Grid Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" Margin="505,110,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Grid Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" >
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="50"/>
                     <RowDefinition  Height="50"/>
@@ -523,8 +550,17 @@
                 <ComboBox Grid.Row="2" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
             </Grid>
+            <TextBlock x:Name="RightStatusText" Grid.Column="3" HorizontalAlignment="Left" Margin="22,20,0,0" Grid.Row="2" Text="Device Status: Not found" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="#FF7A7A7A" Width="263" Grid.ColumnSpan="2" Height="39"/>
+            <Button Tag="RightHand" Content="Upload config" Grid.Row="2" VerticalAlignment="Top" Background="#FF818181" Height="30" Padding="0,0,0,5" Width="120" Click="UploadButton_Click" Margin="0,110,0,0" Grid.Column="3" HorizontalAlignment="Center"/>
+            <Button Tag="RightHand" Content="Download config" Grid.Row="2" VerticalAlignment="Top" Background="#FF818181" Height="30" Padding="0,0,0,5" Width="140" Click="DownloadButton_Click" Margin="0,110,0,0" Grid.Column="4" HorizontalAlignment="Center"/>
+        </Grid>
 
-        </Grid>
+
+        <ComboBox x:Name="CBProfiles" Width="350" Height="30" DropDownOpened="CBProfiles_DropDownOpened" VerticalAlignment="Center" Margin="70,0,0,0"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="0" Text="Profile:" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="#FF959595" FontSize="16"/>
+        <Button Content="Save" Grid.Row="0" VerticalAlignment="Center" Background="#FF818181" Height="25" Padding="0,0,0,5" Width="50" Click="SaveButton_Click" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+        <Button Content="New" Grid.Row="0" VerticalAlignment="Center" Background="#FF818181" Height="25" Padding="0,0,0,5" Width="50" Click="NewButton_Click" HorizontalAlignment="Right" Margin="0,0,80,0"/>
+        <Button Content="Load" Grid.Row="0" VerticalAlignment="Center" Background="#FF818181" Height="25" Padding="0,0,0,5" Width="50" Click="LoadButton_Click" HorizontalAlignment="Right" Margin="0,0,150,0"/>
 
 
     </Grid>
