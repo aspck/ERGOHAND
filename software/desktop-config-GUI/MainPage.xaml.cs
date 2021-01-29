@@ -146,16 +146,20 @@ namespace UWtest
                 //{"FIND", 0x7e },
 
 };
+        public List<ComboBox> LeftHKeys = new List<ComboBox>();
+        public List<ComboBox> RightHKeys = new List<ComboBox>();
 
         public MainPage()
         {
             this.InitializeComponent();
-            Debug.WriteLine("ggg");
+            
+            FindChildren<ComboBox>(LeftHKeys, leftkeymapcontainer, "CBKey");            
+            FindChildren<ComboBox>(RightHKeys, rightkeymapcontainer, "CBKey");
 
         }
 
 
-        internal static void FindChildren<T>(List<T> results, DependencyObject startNode)
+        internal static void FindChildren<T>(List<T> results, DependencyObject startNode, string Tag)
 where T : DependencyObject
         {
             int count = VisualTreeHelper.GetChildrenCount(startNode);
@@ -164,11 +168,108 @@ where T : DependencyObject
                 DependencyObject current = VisualTreeHelper.GetChild(startNode, i);
                 if (current.GetType().Equals(typeof(T)))
                 {
-                    T asType = (T)current;
-                    results.Add(asType);
+                    if ((string)(current as FrameworkElement).Tag == Tag)
+                    {
+                        T asType = (T)current;
+
+                        results.Add(asType);
+                    } 
                 }
-                FindChildren<T>(results, current);
+                FindChildren<T>(results, current, Tag);
             }
+        }
+
+        private void CBProfiles_DropDownOpened(object sender, object e)
+        {
+            // get config files in directory
+            List<string> xmlfiles = new List<string>();
+
+
+            // update item source with file list
+            (sender as ComboBox).ItemsSource = xmlfiles;
+        }
+        private void UploadButton_Click(object sender, RoutedEventArgs e)
+        {
+            string errormsg;
+            /// device BLEdevice;
+            // check button
+            switch ((sender as FrameworkElement).Tag)
+            {
+                case "LeftHand":
+                    /// device = left
+                    break;
+                case "RightHand":
+                    /// device = right
+                    break;
+                default:
+                    break;
+            }
+            // check device
+            /// if (device is paired)
+                // write config
+                /// errormsg = "config uploaded to device"
+            /// else
+                /// errormsg = "upload failed: device not found"
+
+            // display result of operation
+            Popup popup = new Popup();
+
+        }
+        private void DownloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            string errormsg;
+            /// device BLEdevice;
+            // check button
+            switch ((sender as FrameworkElement).Tag)
+            {
+                case "LeftHand":
+                    /// device = left
+                    break;
+                case "RightHand":
+                    /// device = right
+                    break;
+                default:
+                    break;
+            }
+            // check device
+            /// if (device is paired)
+                /// read config and udpate keys
+            /// else
+                /// display error
+                Popup popup = new Popup();
+
+
+
+        }
+        private void LoadButton_Click(object sender, RoutedEventArgs e)
+        {
+            // try to open file
+
+            // read key array
+
+            // if valid, update ui controls
+
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            // try to create backup of current profile
+
+            // write keys to file
+        }
+
+        private void NewButton_Click(object sender, RoutedEventArgs e)
+        {
+            // open text dialog
+
+            // try to create file
+
+            // write keys to file
+            
+            // add new path to list
+
+            // update combobox selection
+
         }
     }
 
