@@ -1,16 +1,16 @@
 ﻿<Page
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:UWtest"
+    xmlns:local="using:desktop_config_GUI"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Custom="using:System"
-    x:Class="UWtest.MainPage"
+    x:Class="desktop_config_GUI.MainPage"
     mc:Ignorable="d" Height="840" Width="670">
     <!-- Style definition for Comboboxes to hide the arrow and define data source. -->
     <Page.Resources>
         <Style x:Key="CBArrowless" TargetType="ComboBox">
-            <Setter Property="ItemsSource" Value="{x:Bind KeyList}"/>
+            <Setter Property="ItemsSource" Value="{x:Bind C.KeyList}"/>
             <Setter Property="DisplayMemberPath" Value="Value"/>
             <Setter Property="SelectedValuePath" Value="Key"/>
             <Setter Property="SelectedIndex" Value="0"/>
