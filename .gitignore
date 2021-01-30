@@ -9,4 +9,6 @@ firmware/PSoc/KeyboardBase.cydsn/KeyboardBase*
 firmware/PSoc/KeyboardBase.cydsn/*.log
 software/desktop-config-GUI/bin/
 software/desktop-config-GUI/obj/
+software/desktop-config-GUI/AppPackages/
+software/desktop-config-GUI/BundleArtifacts/
 *.log

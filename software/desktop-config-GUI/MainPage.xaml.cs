@@ -140,19 +140,18 @@ namespace UWtest
         private List<ComboBox> RightHKeys = new List<ComboBox>();
 
         private int nKeys = 50;  // 25 per device
-        private int KeyReportSize = 13;
 
+        // bluetooth constants, these should be read from an app config file in the future
+        private int KeyReportSize = 13;
         private string Characteristic1UUID = "6AF7ACFD-F66B-4932-8975-41F512990077";
         private string Characteristic2UUID = "4F229A78-0344-430A-B203-CF8685E77E2C";
-
-        // 10A050-FAFF01
-        //private long DeviceAddressLeft = 0x01fffa50a010;
+        private long DeviceAddressLeft = 0x01fffa50a010; // 10A050-FAFF01
+        private long DeviceAddressRightt = 0x02fffa50a010; // 10A050-FAFF02
 
 
         public MainPage()
         {
-            // load app config file            
-
+            // TODO: load app config file          
 
             this.InitializeComponent();
 
@@ -163,8 +162,7 @@ namespace UWtest
             FindChildren<ComboBox>(RightHKeys, rightkeymapcontainer, "CBKey");
 
             // set default profiles
-            //CBProfiles.ItemsSource
-            // 
+
 
         }
 
@@ -218,11 +216,7 @@ where T : DependencyObject
             }      
             
         }
-        
-        private void CBProfiles_DropDownOpened(object sender, object e)
-        {
-        }
-        
+
         private void CBProfiles_DropDownClosed(object sender, object e)
         {
             var s = (sender as ComboBox).SelectedItem;
@@ -245,15 +239,12 @@ where T : DependencyObject
             Windows.Storage.StorageFile newFile =
                 await storageFolder.CreateFileAsync(fname + ".keyprofile", Windows.Storage.CreationCollisionOption.ReplaceExisting);
  
-            // write keys to file            
-
             // update combobox selection
             CBProfiles_RefreshFiles(CBProfiles);
             CBProfiles.SelectedItem = fname;
 
             // if the Popup is open, then close it 
             if (NewProfilePopup.IsOpen) { NewProfilePopup.IsOpen = false; }
-
         }
         
         private void CancelProfilePopupClicked(object sender, RoutedEventArgs e)
@@ -279,7 +270,7 @@ where T : DependencyObject
                 fstream.Dispose();
 
 
-                // if valid, update ui controls
+                // (TODO: if valid) update ui controls
                 int i = 0;
                 for (; i < LeftHKeys.Count; i++)
                 {
@@ -314,14 +305,14 @@ where T : DependencyObject
         
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            // try to create backup of current profile
-
+            //TODO: try to create backup of current profile
 
             try
             {
                 if (CBProfiles.SelectedValue == null) { return; }
                 var fstream = await Windows.Storage.ApplicationData.Current.LocalFolder.OpenStreamForWriteAsync( 
                     CBProfiles.SelectedValue.ToString() + ".keyprofile", Windows.Storage.CreationCollisionOption.ReplaceExisting);
+               
                 byte[] keyBuffer = new byte[nKeys];
 
                 // get selected keys
