@@ -11,8 +11,8 @@
     <Page.Resources>
         <Style x:Key="CBArrowless" TargetType="ComboBox">
             <Setter Property="ItemsSource" Value="{x:Bind KeyList}"/>
-            <Setter Property="DisplayMemberPath" Value="Key"/>
-            <Setter Property="SelectedValuePath" Value="Value"/>
+            <Setter Property="DisplayMemberPath" Value="Value"/>
+            <Setter Property="SelectedValuePath" Value="Key"/>
             <Setter Property="SelectedIndex" Value="0"/>
             <Setter Property="Padding" Value="0,0,0,0" />
             <Setter Property="Height" Value="48" />
@@ -360,7 +360,7 @@
                 <ColumnDefinition Width="10"/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.ColumnSpan="2" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Text="LEFT HAND" FontSize="50" FocusVisualPrimaryBrush="Black" Foreground="#FFA0A0A0" FontFamily="Verdana" Width="289" IsHitTestVisible="False" Margin="2,2,0,0" />
-            <Grid Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE">
+            <Grid Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="20,20,20,20" BorderBrush="Black" Background="#FFDEDEDE">
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="50"/>
                     <RowDefinition  Height="50"/>
@@ -377,7 +377,7 @@
                 <ComboBox Grid.Row="2" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
             </Grid>
-            <Grid Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" >
+            <Grid Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="20,20,20,20" BorderBrush="Black" Background="#FFDEDEDE" >
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="50"/>
                     <RowDefinition  Height="50"/>
@@ -394,7 +394,7 @@
                 <ComboBox Grid.Row="2" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
             </Grid>
-            <Grid Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" >
+            <Grid Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="20,20,20,20" BorderBrush="Black" Background="#FFDEDEDE" >
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="50"/>
                     <RowDefinition  Height="50"/>
@@ -411,7 +411,7 @@
                 <ComboBox Grid.Row="2" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
             </Grid>
-            <Grid Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" >
+            <Grid Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="20,20,20,20" BorderBrush="Black" Background="#FFDEDEDE" >
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="50"/>
                     <RowDefinition  Height="50"/>
@@ -428,7 +428,7 @@
                 <ComboBox Grid.Row="2" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
             </Grid>
-            <Grid Grid.Row="2" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" >
+            <Grid Grid.Row="2" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  Tag="KeyGroup" Width="150" Height="150" CornerRadius="20,20,20,20" BorderBrush="Black" Background="#FFDEDEDE" >
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="50"/>
                     <RowDefinition  Height="50"/>
@@ -465,7 +465,7 @@
                 <ColumnDefinition Width="10"/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.ColumnSpan="3" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Top" Text="RIGHT HAND" FontSize="50" FocusVisualPrimaryBrush="Black" Foreground="#FFA0A0A0" FontFamily="Verdana" IsHitTestVisible="False" Margin="-10,0,0,0" />
-            <Grid Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE">
+            <Grid Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="20,20,20,20" BorderBrush="Black" Background="#FFDEDEDE">
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="50"/>
                     <RowDefinition  Height="50"/>
@@ -482,7 +482,7 @@
                 <ComboBox Grid.Row="2" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
             </Grid>
-            <Grid Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" >
+            <Grid Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Tag="KeyGroup" Width="150" Height="150" CornerRadius="20,20,20,20" BorderBrush="Black" Background="#FFDEDEDE" >
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="50"/>
                     <RowDefinition  Height="50"/>
@@ -499,7 +499,7 @@
                 <ComboBox Grid.Row="2" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
             </Grid>
-            <Grid Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" >
+            <Grid Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="20,20,20,20" BorderBrush="Black" Background="#FFDEDEDE" >
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="50"/>
                     <RowDefinition  Height="50"/>
@@ -516,7 +516,7 @@
                 <ComboBox Grid.Row="2" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
             </Grid>
-            <Grid Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" >
+            <Grid Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="20,20,20,20" BorderBrush="Black" Background="#FFDEDEDE" >
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="50"/>
                     <RowDefinition  Height="50"/>
@@ -533,7 +533,7 @@
                 <ComboBox Grid.Row="2" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
                 <ComboBox Grid.Row="1" Grid.Column="1" Tag="CBKey" Style="{StaticResource CBArrowless}"/>
             </Grid>
-            <Grid Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="8,8,8,8" BorderBrush="Black" Background="#FFDEDEDE" >
+            <Grid Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Tag="KeyGroup" Width="150" Height="150" CornerRadius="20,20,20,20" BorderBrush="Black" Background="#FFDEDEDE" >
                 <Grid.RowDefinitions>
                     <RowDefinition  Height="50"/>
                     <RowDefinition  Height="50"/>
@@ -555,12 +555,23 @@
             <Button Tag="RightHand" Content="Download config" Grid.Row="2" VerticalAlignment="Top" Background="#FF818181" Height="30" Padding="0,0,0,5" Width="140" Click="DownloadButton_Click" Margin="0,110,0,0" Grid.Column="4" HorizontalAlignment="Center"/>
         </Grid>
 
+        <ComboBox Grid.Row="0" x:Name="CBProfiles" Width="350" Height="30" DropDownClosed="CBProfiles_DropDownClosed" DropDownOpened="CBProfiles_DropDownOpened" VerticalAlignment="Center" Margin="70,0,0,0" />
+        <Popup Grid.Row="1" x:Name="NewProfilePopup" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="72,0,0,0">
+            <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" Background="#FFAAAAAA" BorderThickness="2" Width="160">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0,5,0,5" Spacing="5">
+                    <TextBlock Text="Enter profile name:" FontSize="14" />
+                    <TextBox Name="CreateProfileText" Text="" Width="150" Height="32"  />
+                    <Button Content="Create Profile" Click="CreateProfilePopupClicked" Width="150"/>
+                    <Button Content="Cancel" Click="CancelProfilePopupClicked" Width="150" />
 
-        <ComboBox x:Name="CBProfiles" Width="350" Height="30" DropDownOpened="CBProfiles_DropDownOpened" VerticalAlignment="Center" Margin="70,0,0,0"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+
         <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="0" Text="Profile:" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="#FF959595" FontSize="16"/>
         <Button Content="Save" Grid.Row="0" VerticalAlignment="Center" Background="#FF818181" Height="25" Padding="0,0,0,5" Width="50" Click="SaveButton_Click" HorizontalAlignment="Right" Margin="0,0,10,0"/>
-        <Button Content="New" Grid.Row="0" VerticalAlignment="Center" Background="#FF818181" Height="25" Padding="0,0,0,5" Width="50" Click="NewButton_Click" HorizontalAlignment="Right" Margin="0,0,80,0"/>
-        <Button Content="Load" Grid.Row="0" VerticalAlignment="Center" Background="#FF818181" Height="25" Padding="0,0,0,5" Width="50" Click="LoadButton_Click" HorizontalAlignment="Right" Margin="0,0,150,0"/>
+        <Button Content="Load" Grid.Row="0" VerticalAlignment="Center" Background="#FF818181" Height="25" Padding="0,0,0,5" Width="50" Click="LoadButton_Click" HorizontalAlignment="Right" Margin="0,0,80,0"/>
 
 
     </Grid>
