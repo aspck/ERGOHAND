@@ -555,7 +555,7 @@
             <Button Tag="RightHand" Content="Download config" Grid.Row="2" VerticalAlignment="Top" Background="#FF818181" Height="30" Padding="0,0,0,5" Width="140" Click="DownloadButton_Click" Margin="0,110,0,0" Grid.Column="4" HorizontalAlignment="Center"/>
         </Grid>
 
-        <ComboBox Grid.Row="0" x:Name="CBProfiles" Width="350" Height="30" DropDownClosed="CBProfiles_DropDownClosed" DropDownOpened="CBProfiles_DropDownOpened" VerticalAlignment="Center" Margin="70,0,0,0" />
+        <ComboBox Grid.Row="0" x:Name="CBProfiles" Width="350" Height="30" DropDownClosed="CBProfiles_DropDownClosed" VerticalAlignment="Center" Margin="70,0,0,0" />
         <Popup Grid.Row="1" x:Name="NewProfilePopup" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="72,0,0,0">
             <Border BorderBrush="{StaticResource ApplicationForegroundThemeBrush}" Background="#FFAAAAAA" BorderThickness="2" Width="160">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0,5,0,5" Spacing="5">
