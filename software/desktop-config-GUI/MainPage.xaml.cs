@@ -14,13 +14,19 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
+using Windows.System.Threading;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Devices.Bluetooth;
+using Windows.Devices.Bluetooth.GenericAttributeProfile;
+using Windows.Devices.Enumeration;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage.Search;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.Security.Cryptography;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
@@ -28,7 +34,7 @@ using Windows.UI.Xaml.Navigation;
 using System.Diagnostics;
 
 namespace desktop_config_GUI
-{    
+{
     public sealed partial class MainPage : Page
     {
         private Constants C = new Constants();
@@ -36,19 +42,23 @@ namespace desktop_config_GUI
         private List<ComboBox> LeftHKeys = new List<ComboBox>();
         private List<ComboBox> RightHKeys = new List<ComboBox>();
 
+
         public MainPage()
         {
             // TODO: load app config file          
 
             this.InitializeComponent();
 
+
             CBProfiles_RefreshFiles(CBProfiles);
 
             // get all key selection controls
-            FindChildren<ComboBox>(LeftHKeys, leftkeymapcontainer, "CBKey");            
+            FindChildren<ComboBox>(LeftHKeys, leftkeymapcontainer, "CBKey");
             FindChildren<ComboBox>(RightHKeys, rightkeymapcontainer, "CBKey");
 
-            // TODO: set default profile
+            //StartBleDeviceWatcher();
+
+
         }
 
         internal static void FindChildren<T>(List<T> results, DependencyObject startNode, string Tag)
@@ -76,11 +86,39 @@ where T : DependencyObject
             int i = 0;
             for (; i < L.Count; i++)
             {
-                storageBuffer[i] = (byte)L[i].SelectedValue;
+                if (L[i].SelectedValue == null) 
+                {
+                    storageBuffer[i] = 0;
+                } else {
+                    storageBuffer[i] = (byte)L[i].SelectedValue;
+                }
             }
-            for (int j = 0; j <R.Count; j++)
+            for (int j = 0; j < R.Count; j++)
             {
-                storageBuffer[i+j] = (byte)R[j].SelectedValue;
+                if (R[j].SelectedValue == null)
+                {
+                    storageBuffer[i + j] = 0;
+                }
+                else
+                {
+                    storageBuffer[i + j] = (byte)R[j].SelectedValue;
+                }
+            }
+        }
+
+        internal void ParseKeys2(byte[] storageBuffer, List<ComboBox> L, int offset)
+        {
+            int i = 0;
+            for (; i < storageBuffer.Length; i++)
+            {
+                if (L[i + offset].SelectedValue == null)
+                {
+                    storageBuffer[i] = 0;
+                }
+                else
+                {
+                    storageBuffer[i] = (byte)L[i + offset].SelectedValue;
+                }
             }
         }
 
@@ -138,7 +176,21 @@ where T : DependencyObject
             // if the Popup is open, then close it 
             if (NewProfilePopup.IsOpen) { NewProfilePopup.IsOpen = false; }
         }
-        
+
+        private void UpdateKeymapControls(byte[] keyBuffer)
+        {
+            int i = 0;
+            for (; i < LeftHKeys.Count; i++)
+            {
+                // attempts to select the item in the combobox itemssource that matches the int
+                LeftHKeys[i].SelectedValue = keyBuffer[i];
+            }
+            for (int j = 0; j < RightHKeys.Count; j++)
+            {
+                RightHKeys[j].SelectedValue = keyBuffer[i + j];
+            }
+        }
+
         private async void LoadButton_Click(object sender, RoutedEventArgs e)
         {
             // try to open file
@@ -147,25 +199,16 @@ where T : DependencyObject
                 if (CBProfiles.SelectedValue == null) { return; }
                 var fstream = await Windows.Storage.ApplicationData.Current.LocalFolder.OpenStreamForReadAsync( 
                     CBProfiles.SelectedValue.ToString() + ".keyprofile");
-                byte[] keyBuffer = new byte[C.nKeys];
+                byte[] keyBuf = new byte[C.nKeys];
 
                 // read key array
-                fstream.Read(keyBuffer, 0, C.nKeys);
+                fstream.Read(keyBuf, 0, C.nKeys);
                 await fstream.FlushAsync();
                 fstream.Dispose();
 
-
                 // (TODO: if valid) update ui controls
-                int i = 0;
-                for (; i < LeftHKeys.Count; i++)
-                {
-                    // attempts to select the item in the combobox itemssource that matches the int
-                    LeftHKeys[i].SelectedValue = keyBuffer[i];
-                }
-                for (int j = 0; j < RightHKeys.Count; j++)
-                {
-                    RightHKeys[j].SelectedValue = keyBuffer[i+j];
-                }
+                UpdateKeymapControls(keyBuf);
+
 
             } // not sure what to do with these
             catch (NullReferenceException)
@@ -195,15 +238,15 @@ where T : DependencyObject
             try
             {
                 if (CBProfiles.SelectedValue == null) { return; }
-                var fstream = await Windows.Storage.ApplicationData.Current.LocalFolder.OpenStreamForWriteAsync( 
-                    CBProfiles.SelectedValue.ToString() + ".keyprofile", Windows.Storage.CreationCollisionOption.ReplaceExisting);
-               
-                byte[] keyBuffer = new byte[C.nKeys];
 
                 // get selected keys
+                byte[] keyBuffer = new byte[C.nKeys];
                 ParseKeys(keyBuffer, LeftHKeys, RightHKeys);
 
                 // write keys to file
+                var fstream = await Windows.Storage.ApplicationData.Current.LocalFolder.OpenStreamForWriteAsync( 
+                    CBProfiles.SelectedValue.ToString() + ".keyprofile", Windows.Storage.CreationCollisionOption.ReplaceExisting);
+
                 fstream.Write(keyBuffer, 0, C.nKeys);
                 await fstream.FlushAsync();
                 fstream.Dispose();
@@ -219,22 +262,77 @@ where T : DependencyObject
 
         }
         
-        private void UploadButton_Click(object sender, RoutedEventArgs e)
+        private async void UploadButton_Click(object sender, RoutedEventArgs e)
         {
             string errormsg;
             /// device BLEdevice;
+            /// 
+            // get  keys
+            byte[] keyBuffer1 = new byte[13];
+            byte[] keyBuffer2 = new byte[13];
+            Windows.Storage.Streams.IBuffer buffer;
+
+
             // check button
+            BluetoothLEDevice BLEDevice = null;
             switch ((sender as FrameworkElement).Tag)
             {
                 case "LeftHand":
                     /// device = left
+                    BLEDevice = await BluetoothLEDevice.FromIdAsync(C.DeviceAddressLeft);
+                    ParseKeys2(keyBuffer1, LeftHKeys, 0);
+                    ParseKeys2(keyBuffer2, LeftHKeys, 12);
+
                     break;
                 case "RightHand":
                     /// device = right
+                    BLEDevice = await BluetoothLEDevice.FromIdAsync(C.DeviceAddressRight);
+                    ParseKeys2(keyBuffer1, RightHKeys, 0);
+                    ParseKeys2(keyBuffer2, RightHKeys, 12);
                     break;
                 default:
                     break;
             }
+
+            if (BLEDevice != null)
+            {
+                var Sresult = await BLEDevice.GetGattServicesForUuidAsync(new Guid(C.ServiceUUID));
+
+                if (Sresult.Status == GattCommunicationStatus.Success)
+                {
+                    GattDeviceService BLEserv = Sresult.Services[0];
+
+                    // get frist half of keyboard data
+                    var Cresult = await BLEserv.GetCharacteristicsForUuidAsync(new Guid(C.Characteristic1UUID));
+                    if (Cresult.Status == GattCommunicationStatus.Success)
+                    {
+                        GattCharacteristic BLEchar = Cresult.Characteristics[0];
+
+                        buffer = keyBuffer1.AsBuffer();
+                        GattWriteResult result = await BLEchar.WriteValueWithResultAsync(buffer);
+                        if (result.Status == GattCommunicationStatus.Success)
+                        {
+                            Cresult = await BLEserv.GetCharacteristicsForUuidAsync(new Guid(C.Characteristic2UUID));
+                            if (Cresult.Status == GattCommunicationStatus.Success)
+                            {
+                                BLEchar = Cresult.Characteristics[0];
+
+                                buffer = keyBuffer2.AsBuffer();
+                                result = await BLEchar.WriteValueWithResultAsync(buffer);
+                                if (result.Status == GattCommunicationStatus.Success)
+                                {
+                                    Debug.WriteLine("write good");
+                                }
+                                else
+                                {
+                                    Debug.WriteLine("write failed");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             // check device
             /// if (device is paired)
             // write config
@@ -246,23 +344,78 @@ where T : DependencyObject
             Popup popup = new Popup();
 
         }
-        
-        private void DownloadButton_Click(object sender, RoutedEventArgs e)
+
+        private async void DownloadButton_Click(object sender, RoutedEventArgs e)
         {
             string errormsg;
             /// device BLEdevice;
             // check button
+            BluetoothLEDevice BLEDevice = null;
             switch ((sender as FrameworkElement).Tag)
             {
                 case "LeftHand":
                     /// device = left
+                    BLEDevice = await BluetoothLEDevice.FromIdAsync(C.DeviceAddressLeft);                  
                     break;
                 case "RightHand":
                     /// device = right
+                    BLEDevice = await BluetoothLEDevice.FromIdAsync(C.DeviceAddressRight);    
                     break;
                 default:
                     break;
             }
+
+            if (BLEDevice != null)
+            {
+                var Sresult = await BLEDevice.GetGattServicesForUuidAsync(new Guid(C.ServiceUUID));
+
+                if (Sresult.Status == GattCommunicationStatus.Success)
+                {
+                    GattDeviceService BLEserv = Sresult.Services[0];
+
+                    // get frist half of keyboard data
+                    var Cresult = await BLEserv.GetCharacteristicsForUuidAsync(new Guid(C.Characteristic1UUID));
+                    if (Cresult.Status == GattCommunicationStatus.Success)
+                    {
+                        GattCharacteristic BLEchar = Cresult.Characteristics[0];
+                        GattReadResult result = await BLEchar.ReadValueAsync(BluetoothCacheMode.Uncached);
+                        if (result.Status == GattCommunicationStatus.Success)
+                        {
+                            byte[] KeyBuffer1 = result.Value.ToArray();
+                            //CryptographicBuffer.CopyToByteArray(, out KeyBuffer1);
+                            Debug.WriteLine("Read result: {0}", KeyBuffer1.Length);
+
+                            // get second half of keyboard data
+                            Cresult = await BLEserv.GetCharacteristicsForUuidAsync(new Guid(C.Characteristic2UUID));
+                            if (Cresult.Status == GattCommunicationStatus.Success)
+                            {
+                                BLEchar = Cresult.Characteristics[0];
+                                result = await BLEchar.ReadValueAsync(BluetoothCacheMode.Uncached);
+                                if (result.Status == GattCommunicationStatus.Success)
+                                {
+                                    byte[] KeyBuffer2;
+                                    CryptographicBuffer.CopyToByteArray(result.Value, out KeyBuffer2);
+                                    Debug.WriteLine("Read result 2: {0}", KeyBuffer2.Length);
+
+                                    byte[] KeyBuffer = KeyBuffer1.Concat(KeyBuffer2).ToArray();
+
+                                    for (int i = 0; i < LeftHKeys.Count; i++)
+                                    {
+                                        // attempts to select the item in the combobox itemssource that matches the int
+                                        LeftHKeys[i].SelectedValue = KeyBuffer[i];
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Debug.WriteLine("Read failed");
+                        }
+                    }
+                }
+
+            }
+
             // check device
             /// if (device is paired)
             /// read config and udpate keys
@@ -273,7 +426,7 @@ where T : DependencyObject
 
 
         }
-    
+
     }
 
 }

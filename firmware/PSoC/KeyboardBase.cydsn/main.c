@@ -155,12 +155,12 @@ void BLECallBack(uint32 event, void* eventParam)
                 CyBle_GattGetMtuSize(&mtu);
                 DBG_PRINTF("CYBLE_EVT_GATTS_XCNHG_MTU_REQ, final mtu= %d \r\n", mtu);
             }
-            break;
+            break;/*
         case CYBLE_EVT_GATTS_WRITE_REQ:
             DBG_PRINTF("CYBLE_EVT_GATT_WRITE_REQ: %x = ",((CYBLE_GATTS_WRITE_REQ_PARAM_T *)eventParam)->handleValPair.attrHandle);
             ShowValue(&((CYBLE_GATTS_WRITE_REQ_PARAM_T *)eventParam)->handleValPair.value);
             (void)CyBle_GattsWriteRsp(((CYBLE_GATTS_WRITE_REQ_PARAM_T *)eventParam)->connHandle);
-            break;
+            break;/*/
         case CYBLE_EVT_GAP_ENCRYPT_CHANGE:
             DBG_PRINTF("CYBLE_EVT_GAP_ENCRYPT_CHANGE: %x \r\n", *(uint8 *)eventParam);
             break;
@@ -195,8 +195,38 @@ void BLECallBack(uint32 event, void* eventParam)
             pointer to a structure of type CYBLE_GATTS_PREP_WRITE_REQ_PARAM_T. */
             DBG_PRINTF("CYBLE_EVT_GATTS_PREP_WRITE_REQ \r\n");
             break;
+         
+    int16 i;
+    
             
-        /* client has written data to us, let's read it */    
+        case CYBLE_EVT_GATTS_WRITE_REQ:
+            {
+                CYBLE_GATT_HANDLE_VALUE_PAIR_T handle = ((CYBLE_GATTS_WRITE_REQ_PARAM_T *)eventParam)->handleValPair;
+                DBG_PRINTF("CYBLE_EVT_GATTS_WRITE_REQ; handle: %x\r\n", handle.attrHandle);
+                
+                if (handle.attrHandle == KEYMAP_ATTR1)
+                {
+                    for (int w = 0; w < handle.value.len; w++)
+                    {
+                        keyMap[w] = handle.value.val[w];
+                        DBG_PRINTF("%02x:", handle.value.val[w]);
+                    }
+                    Keyboard_configChanged = 1;
+                }
+                else if (handle.attrHandle == KEYMAP_ATTR2)
+                {
+                    for (int w = 0; w < handle.value.len; w++)
+                    {
+                        keyMap[w+(nMAXKEYS/2)] = handle.value.val[w];
+                        DBG_PRINTF("%02x:", handle.value.val[w]);
+                    }
+                    Keyboard_configChanged = 1;
+                }
+                                    
+                (void)CyBle_GattsWriteRsp(((CYBLE_GATTS_WRITE_REQ_PARAM_T *)eventParam)->connHandle);
+            }  
+        break;
+        /* LONG attribute write from client */    
         case CYBLE_EVT_GATTS_EXEC_WRITE_REQ:
             {
                 CYBLE_GATTS_EXEC_WRITE_REQ_T* e = (CYBLE_GATTS_EXEC_WRITE_REQ_T *)eventParam;
@@ -243,8 +273,7 @@ void BLECallBack(uint32 event, void* eventParam)
                     
                     /* notify main loop that config needs to be saved in flash */                       
                     Keyboard_configChanged = 1;
-                }
-                    
+                }        
             }                 
         break;
         /**********************************************************
@@ -334,6 +363,7 @@ int main(void)
                 if (Keyboard_WriteConfig() == 0)
                 {
                     Keyboard_configChanged = 0;
+                    Keyboard_UpdateConfigAtt();
                     DBG_PRINTF("New device config saved to EEPROM\r\n");
                 } else {
                     DBG_PRINTF("Error: New device config not saved, reset device\r\n");
