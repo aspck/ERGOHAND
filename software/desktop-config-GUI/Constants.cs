@@ -37,9 +37,10 @@ namespace desktop_config_GUI
 
         // bluetooth constants, these should be read from an app config file in the future
         internal int KeyReportSize = 13;
+        internal string ServiceUUID = "72450222-C69E-485B-82AC-083A3EAFB3AC";
         internal string Characteristic1UUID = "6AF7ACFD-F66B-4932-8975-41F512990077";
         internal string Characteristic2UUID = "4F229A78-0344-430A-B203-CF8685E77E2C";
-        internal long DeviceAddressLeft = 0x01fffa50a010; // 10A050-FAFF01
-        internal long DeviceAddressRightt = 0x02fffa50a010; // 10A050-FAFF02
+        internal string DeviceAddressLeft = "BluetoothLE#BluetoothLE5c:f3:70:99:86:ef-10:a0:50:fa:ff:01"; // 10A050-FAFF01
+        internal string DeviceAddressRight = "BluetoothLE#BluetoothLE5c:f3:70:99:86:ef-10:a0:50:fa:ff:02"; // 10A050-FAFF02
     }
 }

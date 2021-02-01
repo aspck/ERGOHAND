@@ -45,6 +45,7 @@
   </Applications>
 
   <Capabilities>
+    <DeviceCapability Name="bluetooth"/>
 
   </Capabilities>
 </Package>
