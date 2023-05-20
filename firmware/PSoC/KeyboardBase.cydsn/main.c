@@ -1,6 +1,5 @@
 /*********************************************
  *  File:       main.c
- *  Author:     ***REMOVED***
  *  Created:    18-Jan-2021 
  *
  *  Bluetooth Low Energy keyboard project. 

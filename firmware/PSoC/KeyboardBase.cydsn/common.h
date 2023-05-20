@@ -1,6 +1,5 @@
 /*********************************************
  *  File:       common.h
- *  Author:     ***REMOVED***
  *  Created:    20-Jan-2021 
  *
  *  Includes headers that are used by co-dependent modules in the project.

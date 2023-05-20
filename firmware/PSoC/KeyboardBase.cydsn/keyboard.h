@@ -1,6 +1,5 @@
 /*********************************************
  *  File:       keyboard.h
- *  Author:     ***REMOVED***
  *  Created:    18-Jan-2021 
  *
  *  Functions and settings for interfacing with the keyboard switch hardware

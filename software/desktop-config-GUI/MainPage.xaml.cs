@@ -1,6 +1,5 @@
 ﻿/*********************************************
  *  File:       MainPage.xaml.cs
- *  Author:     ***REMOVED***
  *  Created:    22-Jan-2021 
  *
  *  Bluetooth Low Energy keyboard project. 
